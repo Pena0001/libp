@@ -27,11 +27,11 @@ static int	gnl_verify(char **heap, char **line, int ret)
 {
 	if (ret == 0 && *heap[0] != '\0')
 	{
-		*line = ft_strdup(*heap);
-		ft_strdel(&*heap);
+		*line = _strdup(*heap);
+		_strdel(&*heap);
 		return (1);
 	}
-	ft_strdel(&*heap);
+	_strdel(&*heap);
 	return (0);
 }
 
@@ -59,12 +59,12 @@ static int	gnl_read(int fd, char **heap, char **line)
 	while (ret > 0)
 	{
 		buff[ret] = '\0';
-		tmp = ft_strjoin(*heap, buff);
-		ft_strdel(&*heap);
-		if (ft_strchr(buff, '\n'))
+		tmp = _strjoin(*heap, buff);
+		_strdel(&*heap);
+		if (_strchr(buff, '\n'))
 		{
-			*line = ft_strddup(tmp, '\n');
-			*heap = ft_strdsub(buff, '\n');
+			*line = _strddup(tmp, '\n');
+			*heap = _strdsub(buff, '\n');
 			free(tmp);
 			return (1);
 		}
@@ -95,14 +95,15 @@ int	get_next_line(const int fd, char **line)
 	if (fd < 0 || fd > MAX_FD || !line)
 		return (-1);
 	if (!heap[fd])
-		heap[fd] = ft_strnew(0);
-	if (ft_strchr(heap[fd], '\n'))
+		heap[fd] = _strnew(0);
+	if (_strchr(heap[fd], '\n'))
 	{
-		*line = ft_strddup(heap[fd], '\n');
-		tmp = ft_strdsub(heap[fd], '\n');
-		ft_strdel(&heap[fd]);
+		*line = _strddup(heap[fd], '\n');
+		tmp = _strdsub(heap[fd], '\n');
+		_strdel(&heap[fd]);
 		heap[fd] = tmp;
 		return (1);
 	}
 	return (gnl_read(fd, &heap[fd], &*line));
 }
+
